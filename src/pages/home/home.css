@@ -1,0 +1,50 @@
+.doorContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid red;
+  height: 180px;
+  width: 100px;
+  position: relative;
+}
+
+/* Hide particles by default */
+.doorContainer .particules-container {
+  opacity: 0;
+  visibility: hidden; /* Hide from rendering and events */
+  pointer-events: none; /* Disable mouse interaction */
+  transition: opacity 0.3s ease-in-out, visibility 0s linear 0.3s; /* Delay visibility change */
+  /* Ensure it covers the area, adjust if needed */
+  position: absolute; /* Keep positioning consistent */
+
+  width: 65%;
+  height: 65%;
+  z-index: -1; /* Ensure it's behind everything */
+}
+
+/* Show particles on hover */
+.doorContainer:hover .particules-container {
+  opacity: 1;
+  visibility: visible; /* Make visible */
+  pointer-events: auto; /* Enable mouse interaction */
+  transition: opacity 0.3s ease-in-out; /* Reset visibility transition */
+}
+
+.doorContainer p {
+  z-index: 2;
+  position: absolute;
+  top: 0px;
+}
+.doorContainer:hover > p {
+  animation: rotate 1s ease-in-out alternate infinite;
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate3d(1, 2, 2, 25deg);
+  }
+
+  100% {
+    transform: rotate3d(1, 2, 2, -25deg);
+  }
+}
