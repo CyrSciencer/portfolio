@@ -1,10 +1,11 @@
 import { Link } from "react-router";
+import "./header.css";
 
 const Header = () => {
   return (
-    <div>
+    <div className="header-div">
       <Link to="/">
-        <h1>Portfolio</h1>
+        <h1>Portfolio de Cyr ROUYRRE</h1>
       </Link>
     </div>
   );

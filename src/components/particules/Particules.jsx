@@ -10,6 +10,8 @@ function ParticleAnimation({ colorParticule }) {
   // Particle Class (nested or defined outside)
   class Particle {
     constructor(x, y, canvasWidth, canvasHeight, ctx) {
+      this.x = x;
+      this.y = y;
       this.canvasWidth = canvasWidth;
       this.canvasHeight = canvasHeight;
       this.ctx = ctx;
@@ -113,11 +115,10 @@ function ParticleAnimation({ colorParticule }) {
     draw() {
       if (!this.ctx) return; // Guard clause
 
-      // Draw the particle circle
+      // Draw the particle
       this.ctx.fillStyle = this.color;
       this.ctx.beginPath();
-      this.ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-      this.ctx.fill();
+      this.ctx.fillRect(this.x, this.y, this.size, this.size);
     }
   }
 

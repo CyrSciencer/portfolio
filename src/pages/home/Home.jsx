@@ -2,6 +2,7 @@ import { Link } from "react-router";
 import Door from "../../components/door/Door";
 import { useNavigate } from "react-router-dom";
 import Particules from "../../components/particules/Particules";
+
 import "./home.css";
 
 const Home = () => {

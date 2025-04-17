@@ -1,0 +1,28 @@
+.header-div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid red;
+  background: #000;
+  height: 75px;
+}
+
+.header-div h1 {
+  color: #000;
+  font-size: 24px;
+  font-weight: 600;
+  height: 50px;
+  padding: 15px;
+  background-color: #4e5b6d;
+  box-sizing: border-box;
+  border-radius: 10px;
+  -webkit-text-stroke: 0.5px #575757;
+  border: 1px groove #909090;
+}
+.header-div h1:hover {
+  background-color: #575757;
+  color: #fff;
+}
+a {
+  text-decoration: none;
+}
