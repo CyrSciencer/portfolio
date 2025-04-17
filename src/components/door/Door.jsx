@@ -25,6 +25,7 @@ const Door = ({
   // --- Constants --- //
   const FADE_DURATION = 0.3;
   const CAMERA_Y_OFFSET = -1; // <<< Added vertical offset for the camera
+  const RESOLUTION_FACTOR = 4; // <<< Lower resolution factor (e.g., 2 = half res, 4 = quarter res)
 
   useEffect(() => {
     const currentMount = mountRef.current;
@@ -32,32 +33,50 @@ const Door = ({
 
     // --- 1. Core Three.js Setup --- //
     const scene = new THREE.Scene();
+
+    // Calculate initial low resolution dimensions
+    const initialWidth = currentMount.clientWidth;
+    const initialHeight = currentMount.clientHeight;
+    const lowResWidth = Math.floor(initialWidth / RESOLUTION_FACTOR);
+    const lowResHeight = Math.floor(initialHeight / RESOLUTION_FACTOR);
+
     const camera = new THREE.PerspectiveCamera(
       75,
-      currentMount.clientWidth / currentMount.clientHeight,
+      lowResWidth / lowResHeight, // Aspect ratio based on low resolution
       0.1,
       1000
     );
     cameraRef.current = camera;
 
-    // --- Renderer Setup (Modified for Transparency) ---
+    // --- Renderer Setup (Modified for Transparency & 32-bit Style & Low Res) ---
     const renderer = new THREE.WebGLRenderer({
-      antialias: true,
+      antialias: false, // <<< Set to false for pixelated look
       alpha: true, // <<< Add alpha: true for transparency
     });
     renderer.setClearColor(0x000000, 0); // <<< Set clear color with 0 alpha
-    renderer.setSize(currentMount.clientWidth, currentMount.clientHeight);
-    renderer.physicallyCorrectLights = true;
+    // Set DRAWING BUFFER size to low resolution, but DON'T update style
+    renderer.setSize(lowResWidth, lowResHeight, false);
+    renderer.physicallyCorrectLights = false; // <<< Disabled for simpler, retro lighting
+    // Keep devicePixelRatio for potential use, though low-res might dominate
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.outputEncoding = THREE.sRGBEncoding;
     rendererRef.current = renderer;
 
+    // Apply styles to the CANVAS element for upscaling
+    const canvas = renderer.domElement;
+    canvas.style.width = "100%";
+    canvas.style.height = "100%";
+    canvas.style.imageRendering = "pixelated";
+    // Optional: Add vendor prefixes if needed for older browsers
+    // canvas.style.imageRendering = '-moz-crisp-edges';
+    // canvas.style.imageRendering = '-webkit-optimize-contrast';
+
     // --- 2. Lighting Setup --- //
-    // Reverted to original light setup
+    // Keep original light setup for now, but physicallyCorrectLights=false will change behavior
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
     scene.add(ambientLight);
     const directionalLight = new THREE.DirectionalLight(0xffffff, 1); // Reverted to default white
-    directionalLight.position.set(20, -5, 0);
+    directionalLight.position.set(15, 15, -15);
     scene.add(directionalLight);
 
     // --- 3. Model & Animation Loading --- //
@@ -68,33 +87,57 @@ const Door = ({
         console.log("GLTF loaded successfully:", gltf);
         modelRef.current = gltf.scene;
 
-        // --- Apply Initial Custom Color --- (Reverted from Toon Material)
+        // --- Apply 32-bit Style Material ---
         if (modelRef.current) {
-          console.log(`Applying initial color: ${modelColor}`);
+          console.log(
+            `Applying 32-bit style material (Lambert, flat, nearest)`
+          );
           modelRef.current.traverse((object) => {
             if (object.isMesh && object.material) {
-              // Handle both single material and array of materials
-              if (Array.isArray(object.material)) {
-                object.material.forEach((material) => {
-                  if (material.color) {
-                    // Check if material has color property
-                    material.color.set(modelColor);
-                  }
-                });
-              } else {
-                if (object.material.color) {
-                  // Check if material has color property
-                  object.material.color.set(modelColor);
+              const apply32BitStyle = (originalMaterial) => {
+                const newMaterial = new THREE.MeshLambertMaterial();
+
+                // Copy essential properties
+                if (originalMaterial.color) {
+                  newMaterial.color.copy(originalMaterial.color);
                 }
+                if (originalMaterial.map) {
+                  newMaterial.map = originalMaterial.map;
+                  // Apply Nearest Filter for pixelated textures
+                  newMaterial.map.magFilter = THREE.NearestFilter;
+                  newMaterial.map.minFilter = THREE.NearestFilter;
+                  newMaterial.map.needsUpdate = true;
+                  console.log(
+                    "Applied NearestFilter to map on new Lambert material:",
+                    originalMaterial.name || "Unnamed Original"
+                  );
+                }
+
+                // Apply custom color prop override
+                newMaterial.color.set(modelColor);
+
+                // Apply flat shading
+                newMaterial.flatShading = true;
+                newMaterial.needsUpdate = true; // Might not be strictly needed for flatShading but good practice
+
+                return newMaterial;
+              };
+
+              // Replace material(s)
+              if (Array.isArray(object.material)) {
+                object.material = object.material.map(apply32BitStyle);
+              } else {
+                object.material = apply32BitStyle(object.material);
               }
             }
           });
         }
-        // --- END: Apply Initial Custom Color ---
+        // --- END: Apply 32-bit Style Material ---
 
         scene.add(modelRef.current); // Add model AFTER applying material
 
         // --- ADDED: Adjust Camera to Fit Model --- //
+        // Camera setup remains mostly the same, aspect ratio is handled
         const box = new THREE.Box3().setFromObject(modelRef.current);
         const center = box.getCenter(new THREE.Vector3());
         const size = box.getSize(new THREE.Vector3());
@@ -226,17 +269,24 @@ const Door = ({
         const width = currentMount.clientWidth;
         const height = currentMount.clientHeight;
 
-        cameraRef.current.aspect = width / height;
+        // Calculate new low resolution
+        const newLowResWidth = Math.floor(width / RESOLUTION_FACTOR);
+        const newLowResHeight = Math.floor(height / RESOLUTION_FACTOR);
+
+        // Update camera aspect ratio based on low resolution
+        cameraRef.current.aspect = newLowResWidth / newLowResHeight;
         cameraRef.current.updateProjectionMatrix();
 
-        rendererRef.current.setSize(width, height);
-        rendererRef.current.setPixelRatio(window.devicePixelRatio);
+        // Update renderer drawing buffer size, DON'T update style
+        rendererRef.current.setSize(newLowResWidth, newLowResHeight, false);
+        // Keep devicePixelRatio if needed
+        // rendererRef.current.setPixelRatio(window.devicePixelRatio);
       }
     };
 
     // --- 7. Initial Setup & Event Listeners --- //
-    currentMount.appendChild(renderer.domElement);
-    const canvasElement = renderer.domElement;
+    currentMount.appendChild(canvas); // Append the styled canvas
+    // const canvasElement = renderer.domElement; // Already got canvas above
     // Add mouseenter/mouseleave listeners to the container div
     currentMount.addEventListener("mouseenter", handleMouseEnter);
     currentMount.addEventListener("mouseleave", handleMouseLeave);
@@ -267,19 +317,20 @@ const Door = ({
           if (object.isMesh) {
             if (object.geometry) object.geometry.dispose();
             if (object.material) {
+              // Make sure to dispose the *replaced* materials
               if (Array.isArray(object.material)) {
                 object.material.forEach((material) => {
-                  if (material.map) material.map.dispose();
+                  if (material.map) material.map.dispose(); // Dispose texture if we own it
                   material.dispose();
                 });
               } else {
-                if (object.material.map) object.material.map.dispose();
+                if (object.material.map) object.material.map.dispose(); // Dispose texture if we own it
                 object.material.dispose();
               }
             }
           }
         });
-        console.log("Cleanup: Model disposed");
+        console.log("Cleanup: Model disposed (including replaced materials)");
       }
       modelRef.current = null;
       mixerRef.current = null;
@@ -295,7 +346,8 @@ const Door = ({
         rendererRef.current.dispose();
         if (currentMount && rendererRef.current.domElement) {
           try {
-            currentMount.removeChild(rendererRef.current.domElement);
+            // Use the 'canvas' variable captured earlier for removal
+            currentMount.removeChild(canvas);
           } catch (error) {
             console.error(
               "Cleanup Error removing renderer DOM element:",
@@ -310,26 +362,29 @@ const Door = ({
 
       console.log("Cleanup: Complete");
     };
-  }, []); // Reverted to empty dependency array for setup/cleanup effect
+    // Update dependency array to include the factor if it were state/prop
+    // }, [modelColor, RESOLUTION_FACTOR]);
+  }, []); // Keep empty for now as factor is const
 
-  // --- Effect to Update Color on Prop Change --- (Reverted from Toon updates)
+  // --- Effect to Update Color on Prop Change ---
   useEffect(() => {
     // Only run if the model is loaded and color prop changes
     if (modelRef.current && modelColor) {
-      console.log(`Updating model color to: ${modelColor}`);
+      console.log(`Updating model color to: ${modelColor} (Lambert)`);
       modelRef.current.traverse((object) => {
         if (object.isMesh && object.material) {
+          const updateMaterialColor = (material) => {
+            // Check if material is Lambert and has color property
+            if (material.isMeshLambertMaterial && material.color) {
+              material.color.set(modelColor);
+            }
+            // Texture filters are set at load time, no need to update here
+          };
           // Handle both single material and array of materials
           if (Array.isArray(object.material)) {
-            object.material.forEach((material) => {
-              if (material.color) {
-                material.color.set(modelColor);
-              }
-            });
+            object.material.forEach(updateMaterialColor);
           } else {
-            if (object.material.color) {
-              object.material.color.set(modelColor);
-            }
+            updateMaterialColor(object.material);
           }
         }
       });
