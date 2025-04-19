@@ -4,7 +4,7 @@ function ParticleBackgroundAnimation({ colorParticule }) {
   const canvasRef = useRef(null);
   const particlesArray = useRef([]);
   const animationFrameId = useRef(null);
-  const numberOfParticles = 200;
+  const numberOfParticles = 300;
   const currentDimensions = useRef({ width: 0, height: 0 }); // Store dimensions
 
   // Particle Class (nested or defined outside)
@@ -88,7 +88,7 @@ function ParticleBackgroundAnimation({ colorParticule }) {
       }
       // Clear the canvas for transparency
       ctx.clearRect(0, 0, width, height);
-      // ctx.fillStyle = "rgba(34, 34, 34, 0.2)"; // Use a fillStyle that allows seeing particles
+      ctx.fillStyle = "rgba(34, 34, 34, 0.2)"; // Use a fillStyle that allows seeing particles
       // ctx.fillRect(0, 0, width, height);
       particlesArray.current.forEach((particle) => {
         particle.update();

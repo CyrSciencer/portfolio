@@ -2,7 +2,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 1px solid red;
+  /* border: 1px solid red; */ /* Remove debug border */
   height: 180px;
   width: 100px;
   position: relative;
@@ -19,7 +19,7 @@
 
   width: 65%;
   height: 65%;
-  z-index: -1; /* Ensure it's behind everything */
+  z-index: 1; /* Ensure particles are behind text */
 }
 
 /* Show particles on hover */
@@ -31,7 +31,7 @@
 }
 
 .doorContainer p {
-  z-index: 2;
+  z-index: 2; /* Above particles */
   position: absolute;
   top: 0px;
 }
@@ -42,9 +42,87 @@
 @keyframes rotate {
   0% {
     transform: rotate3d(1, 2, 2, 25deg);
+    color: #fff; /* Restore color */
   }
-
+  50% {
+    color: #7b7b7b; /* Restore color */
+  }
   100% {
     transform: rotate3d(1, 2, 2, -25deg);
+    color: #000; /* Restore color */
+  }
+}
+
+/* Restore General Page Styles */
+h1 {
+  text-align: center;
+  margin: 20px;
+  font-size: 32px;
+  font-weight: 600;
+  text-decoration: underline;
+}
+
+li {
+  list-style: square;
+  margin-left: 20px;
+}
+
+main {
+  padding: 20px;
+}
+
+.projectsContainer {
+  margin-top: 30px;
+}
+
+.exercices,
+.réseaux {
+  display: flex;
+  flex-direction: column;
+}
+
+.exercices h2,
+.réseaux h2 {
+  text-align: center;
+  margin: 20px;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.exercices h2 span {
+  font-weight: bold;
+  /* Color is inline */
+}
+
+.exercice-container,
+.réseaux-container {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+
+footer {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-top: 20px;
+  background-color: #000000;
+  padding: 10px;
+  color: #fff;
+}
+footer .doorContainer:hover > p {
+  animation: footerAni 1s ease-in-out alternate infinite;
+}
+@keyframes footerAni {
+  0% {
+    transform: rotate3d(1, 2, 2, 25deg);
+    color: #fff; /* Restore color */
+  }
+  50% {
+    color: #49984d; /* Restore color */
+  }
+  100% {
+    transform: rotate3d(1, 2, 2, -25deg);
+    color: #fff; /* Restore color */
   }
 }
