@@ -94,7 +94,7 @@ const Home = () => {
       </main>
       <footer>
         <div className="doorContainer">
-          <Particules colorParticule="#fff" />
+          <Particules colorParticule="rgb(212, 175, 55)" />
           <Door modelColor="#fff" onPressing={contactDoor} />
           <p>Contact</p>
         </div>

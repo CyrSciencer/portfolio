@@ -119,7 +119,7 @@ footer .doorContainer:hover > p {
     color: #fff; /* Restore color */
   }
   50% {
-    color: #49984d; /* Restore color */
+    color: rgb(212, 175, 55); /* Restore color */
   }
   100% {
     transform: rotate3d(1, 2, 2, -25deg);

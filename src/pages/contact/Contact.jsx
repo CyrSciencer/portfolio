@@ -1,6 +1,7 @@
 import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import emailjs from "@emailjs/browser";
+import "./Contact.css";
 
 const Contact = () => {
   const form = useRef();
@@ -61,7 +62,7 @@ const Contact = () => {
   };
 
   return (
-    <main>
+    <main className="contact-main">
       <h1>Contact</h1>
       <form ref={form} onSubmit={handleSubmit}>
         <input
