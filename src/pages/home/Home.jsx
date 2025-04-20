@@ -13,7 +13,6 @@ const Home = () => {
   return (
     <>
       <main>
-        <h1>Page principale</h1>
         <div className="projectsContainer">
           <div className="exercices">
             <h2>

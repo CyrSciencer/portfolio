@@ -54,13 +54,6 @@
 }
 
 /* Restore General Page Styles */
-h1 {
-  text-align: center;
-  margin: 20px;
-  font-size: 32px;
-  font-weight: 600;
-  text-decoration: underline;
-}
 
 li {
   list-style: square;
