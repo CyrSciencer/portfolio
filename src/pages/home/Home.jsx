@@ -68,6 +68,19 @@ const Home = () => {
               />
             </div>
           </div>
+          <div className="projet-perso">
+            <h2>Projets perso</h2>
+            <div className="projet-perso-container">
+              <PortfolioCard
+                title="Alchimie des couleurs"
+                description="un site qui permet d'expérimenter et composer avec les couleurs, à utiliser pour des projets ou par simple curiosité."
+                link="https://alchimie-des-couleurs.com"
+                particulesColor="rgb(149, 255, 126)"
+                modelColor="rgb(116, 192, 255)"
+                backgroundColor="rgb(200,29,100,0.7)"
+              />
+            </div>
+          </div>
           <div className="réseaux">
             <h2>Réseaux</h2>
             <div className="réseaux-container">

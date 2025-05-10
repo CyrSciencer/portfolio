@@ -18,7 +18,7 @@ const PortfolioCard = ({
       <div className="doorContainer">
         <Particules colorParticule={particulesColor} />
         <Door modelColor={modelColor} onPressing={() => linkClick(link)} />
-        <p>{title}</p>
+        <p className="card-title">{title}</p>
       </div>
       <p>{description}</p>
       <ul>

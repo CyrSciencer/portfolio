@@ -69,13 +69,15 @@ main {
 }
 
 .exercices,
-.réseaux {
+.réseaux,
+.projet-perso {
   display: flex;
   flex-direction: column;
 }
 
 .exercices h2,
-.réseaux h2 {
+.réseaux h2,
+.projet-perso h2 {
   text-align: center;
   margin: 20px;
   font-size: 24px;
@@ -88,7 +90,8 @@ main {
 }
 
 .exercice-container,
-.réseaux-container {
+.réseaux-container,
+.projet-perso-container {
   display: flex;
   justify-content: space-around;
   flex-wrap: wrap;
