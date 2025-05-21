@@ -1,24 +1,23 @@
-import { useState, useRef } from "react";
+import { FC, useState, useRef, FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import emailjs from "@emailjs/browser";
 import "./Contact.css";
 
-const Contact = () => {
-  const form = useRef();
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [message, setMessage] = useState("");
-  const [status, setStatus] = useState("");
+const Contact: FC = () => {
+  const form = useRef<HTMLFormElement>(null);
+  const [name, setName] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+  const [message, setMessage] = useState<string>("");
+  const [status, setStatus] = useState<string>("");
 
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setStatus("Sending...");
 
     const serviceID = import.meta.env.VITE_EMAILJS_SERVICE_ID;
-    const templateResponseID = import.meta.env
-      .VITE_EMAILJS_TEMPLATE_RESPONSE_ID;
+    const templateResponseID = import.meta.env.VITE_EMAILJS_TEMPLATE_RESPONSE_ID;
     const templateAskID = import.meta.env.VITE_EMAILJS_TEMPLATE_ASK_ID;
     const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
 
@@ -38,6 +37,8 @@ const Contact = () => {
     }
 
     try {
+      if (!form.current) return;
+      
       await emailjs.sendForm(
         serviceID,
         templateResponseID,
@@ -51,7 +52,7 @@ const Contact = () => {
       setEmail("");
       setMessage("");
       navigate("/");
-    } catch (error) {
+    } catch (error: any) {
       console.log("FAILED...", error.text || error); // Log error object too
       setStatus(
         `Failed to send message: ${
@@ -95,4 +96,4 @@ const Contact = () => {
   );
 };
 
-export default Contact;
+export default Contact; 

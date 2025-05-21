@@ -1,10 +1,9 @@
-import Door from "../../components/door/Door";
+import { FC } from "react";
 import { useNavigate } from "react-router-dom";
-import Particules from "../../components/particules/Particules";
 import PortfolioCard from "../../components/portfolioCard/PortfolioCard";
 import "./home.css";
 
-const Home = () => {
+const Home: FC = () => {
   const navigate = useNavigate();
   const contactDoor = () => {
     navigate("/contact");
@@ -24,20 +23,17 @@ const Home = () => {
                 title="deliveroo-like"
                 description="Exercice de reproduction d'une page web restaurant sur deliveroo, contenant:"
                 link="https://delivre00.netlify.app"
-                particulesColor="rgb(192, 96, 96)"
-                modelColor="#2CB1BA"
                 descriptionList={[
                   "La description du restaurant.",
                   "Une liste de repas et leurs prix.",
                   "Un panier de commande interactif.",
                 ]}
-              />
+                backgroundColor="rgba(44, 177, 186, 0.7)"
+              />    
               <PortfolioCard
                 title="vinted-like"
                 description="Exercice de reproduction du site vinted, contenant:"
                 link="https://vintedlike.netlify.app"
-                particulesColor="rgb(192, 96, 96)"
-                modelColor="#00CCBC"
                 descriptionList={[
                   "Une page d'accueil, avec des offres de vente.",
                   "Une page d'inscription.",
@@ -52,8 +48,6 @@ const Home = () => {
                 title="marvel-archive"
                 description="Exercice de creation d'un wiki Marvel, contenant:"
                 link="https://marvel-archive.netlify.app"
-                particulesColor="rgb(180, 218, 225)"
-                modelColor="#ED1D24"
                 descriptionList={[
                   "Une page d'accueil, avec avec des lien vers les personnages ou les comics.",
                   "Une page avec la liste des personnages sur plusieurs pages.",
@@ -75,8 +69,6 @@ const Home = () => {
                 title="Alchimie des couleurs"
                 description="un site qui permet d'expérimenter et composer avec les couleurs, à utiliser pour des projets ou par simple curiosité."
                 link="https://alchimie-des-couleurs.com"
-                particulesColor="rgb(149, 255, 126)"
-                modelColor="rgb(116, 192, 255)"
                 backgroundColor="rgb(200,29,100,0.7)"
               />
             </div>
@@ -88,16 +80,12 @@ const Home = () => {
                 title="Github"
                 description="Mon github"
                 link="https://github.com/CyrSciencer"
-                particulesColor="rgb(255, 255, 255)"
-                modelColor="rgb(59, 59, 59)"
                 backgroundColor="rgb(125, 125, 125,0.7)"
               />
               <PortfolioCard
                 title="Linkedin"
                 description="Mon linkedin"
                 link="https://www.linkedin.com/in/cyr-rouyrre-a55b0535a/"
-                particulesColor="rgb(255, 255, 255)"
-                modelColor="#0A66C2"
                 backgroundColor="rgb(10, 102, 194,0.7)"
               />
             </div>
@@ -105,14 +93,12 @@ const Home = () => {
         </div>
       </main>
       <footer>
-        <div className="doorContainer">
-          <Particules colorParticule="rgb(212, 175, 55)" />
-          <Door modelColor="#fff" onPressing={contactDoor} />
-          <p>Contact</p>
+        <div className="contactContainer">
+          <p onClick={contactDoor}>Contact</p>
         </div>
       </footer>
     </>
   );
 };
 
-export default Home;
+export default Home; 

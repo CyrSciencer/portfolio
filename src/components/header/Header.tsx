@@ -1,7 +1,8 @@
-import { Link } from "react-router";
+import { FC } from "react";
+import { Link } from "react-router-dom";
 import "./Header.css";
 
-const Header = () => {
+const Header: FC = () => {
   return (
     <div className="header-div">
       <Link to="/">
@@ -11,4 +12,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default Header; 
