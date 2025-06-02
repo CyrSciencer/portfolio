@@ -36,7 +36,7 @@ main {
 .exercices h2::after,
 .réseaux h2::after,
 .projet-perso h2::after {
-  content: '---------------';
+  content: '-----';
   position: absolute;
   top: 50%;
   transform: translateY(-50%);

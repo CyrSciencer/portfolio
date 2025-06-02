@@ -1,48 +1,23 @@
-import { FC, useEffect, useRef } from "react";
-import "./ParticulesBackground.css";
+import { FC, useEffect, useRef } from 'react';
+import './ParticulesBackground.css';
 
 interface ParticulesBackgroundProps {
   colorParticule?: string;
 }
 
-const ParticulesBackground: FC<ParticulesBackgroundProps> = ({ colorParticule = "rgba(79, 79, 79, 0.5)" }) => {
+const ParticulesBackground: FC<ParticulesBackgroundProps> = ({
+  colorParticule = 'rgba(79, 79, 79, 0.11)',
+}) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   // Array of alchemical, mathematical and programming symbols
-  const symbols = [
-    // Alchemical and planetary symbols
-    "☉", "☽", "☿", "♀", "♂", "♃", "♄", "♅", "♆", "♇",
-    "⚉", "⚊", "⚋", "⚌", "⚍", "⚎", "⚏", "⚐", "⚑", "⚒",
-    "⚔", "⚕", "⚖", "⚗", "⚘", "⚙", "⚚", "⚛", "⚜",
-    "⚝", "⚞", "⚟", "⚠", "⚢", "⚣", "⚤", "⚥", "⚦",
-    "⚧", "⚨", "⚩", "⚬", "⚭", "⚮", "⚯", "⚰",
-    "⚱", "⚲", "⚳", "⚴", "⚵", "⚶", "⚷", "⚸", "⚹", "⚺",
-    "⚻", "⚼", "⚿", "⛀", "⛁", "⛂", "⛃",
-    
-    // Mathematical symbols
-    "∀", "∂", "∃", "∄", "∅", "∆", "∇", "∈", "∉", "∊",
-    "∋", "∌", "∍", "∎", "∏", "∐", "∑", "−", "∓", "∔",
-    "∕", "∖", "∗", "∘", "∙", "√", "∛", "∜", "∝", "∞",
-    "∟", "∡", "∢", "∣", "∤", "∥", "∦", "∧", "∨", "∩",
-    "∪", "∫", "∬", "∭", "∮", "∯", "∰", "∱", "∲", "∳",
-    
-    // Programming and technical symbols
-    "⌘", "⌥", "⌦", "⌧", "⌨", "⌫", "⌬", "⌭", "⌮", "⌯",
-    "⌰", "⌱", "⌲", "⌳", "⌴", "⌵", "⌶", "⌷", "⌸", "⌹",
-    "⌺", "⌻", "⌼", "⌽", "⌾", "⌿", "⍀", "⍁", "⍂", "⍃",
-    "⍄", "⍅", "⍆", "⍇", "⍈", "⍉", "⍊", "⍋", "⍌", "⍍",
-    "⍎", "⍏", "⍐", "⍑", "⍒", "⍓", "⍔", "⍕", "⍖", "⍗",
-    "⍘", "⍙", "⍚", "⍛", "⍜", "⍝", "⍞", "⍟", "⍠", "⍡",
-    "⍢", "⍣", "⍤", "⍥", "⍦", "⍧", "⍨", "⍩", "⍪", "⍫",
-    "⍬", "⍭", "⍮", "⍯", "⍰", "⍱", "⍲", "⍳", "⍴", "⍵",
-    "⍶", "⍷", "⍸", "⍹", "⍺"
-  ];
+  const symbols = ['<>', '</>', 'f()', '//', '#'];
 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const ctx = canvas.getContext("2d");
+    const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
     // Set canvas size
@@ -51,7 +26,7 @@ const ParticulesBackground: FC<ParticulesBackgroundProps> = ({ colorParticule = 
       canvas.height = window.innerHeight;
     };
     resizeCanvas();
-    window.addEventListener("resize", resizeCanvas);
+    window.addEventListener('resize', resizeCanvas);
 
     // Particle settings
     const particles: {
@@ -70,7 +45,7 @@ const ParticulesBackground: FC<ParticulesBackgroundProps> = ({ colorParticule = 
         y: Math.random() * canvas.height,
         size: Math.random() * 20 + 10,
         speedY: -(Math.random() * 1 + 0.5),
-        symbol: symbols[Math.floor(Math.random() * symbols.length)]
+        symbol: symbols[Math.floor(Math.random() * symbols.length)],
       });
     }
 
@@ -78,7 +53,7 @@ const ParticulesBackground: FC<ParticulesBackgroundProps> = ({ colorParticule = 
     const animate = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      particles.forEach((particle) => {
+      particles.forEach(particle => {
         // Update position
         particle.y += particle.speedY;
 
@@ -92,8 +67,8 @@ const ParticulesBackground: FC<ParticulesBackgroundProps> = ({ colorParticule = 
         // Draw particle as a symbol
         ctx.fillStyle = colorParticule;
         ctx.font = `${particle.size}px Arial`;
-        ctx.textAlign = "center";
-        ctx.textBaseline = "middle";
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
         ctx.fillText(particle.symbol, particle.x, particle.y);
       });
 
@@ -104,7 +79,7 @@ const ParticulesBackground: FC<ParticulesBackgroundProps> = ({ colorParticule = 
 
     // Cleanup
     return () => {
-      window.removeEventListener("resize", resizeCanvas);
+      window.removeEventListener('resize', resizeCanvas);
     };
   }, [colorParticule]);
 

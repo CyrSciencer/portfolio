@@ -46,28 +46,17 @@
   font-size: 18px;
   font-weight: bold;
   margin: 30px;
-  width: 0;
-  overflow: hidden;
-  white-space: nowrap;
-  border-right: 2px solid black;
+  transition: transform 0.3s ease;
 }
 .card:hover .card-title {
-  animation: typing 2s steps(40, end) forwards;
-}
-@keyframes typing {
-  from {
-    width: 0;
-  }
-  to {
-    width: 100%;
-  }
+  transform: scale(1.1);
 }
 
 .card-list {
   display: flex;
   flex-direction: column;
   align-items: center;
-  max-height: 100px;
+  max-height: 150px;
   overflow: auto;
   padding: 10px;
   scrollbar-width: thin;
