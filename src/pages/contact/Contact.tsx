@@ -1,99 +1,117 @@
-import { FC, useState, useRef, FormEvent } from "react";
-import { useNavigate } from "react-router-dom";
-import emailjs from "@emailjs/browser";
-import "./Contact.css";
+import { FC, useState, useRef, FormEvent } from 'react';
+import emailjs from '@emailjs/browser';
+import './Contact.css';
 
-const Contact: FC = () => {
+const Contact: FC<{ setPageLink: (pageLink: string) => void }> = ({ setPageLink }) => {
   const form = useRef<HTMLFormElement>(null);
-  const [name, setName] = useState<string>("");
-  const [email, setEmail] = useState<string>("");
-  const [message, setMessage] = useState<string>("");
-  const [status, setStatus] = useState<string>("");
+  const [name, setName] = useState<string>('');
+  const [email, setEmail] = useState<string>('');
+  const [message, setMessage] = useState<string>('');
+  const [status, setStatus] = useState<string>('');
 
-  const navigate = useNavigate();
+  setPageLink('home');
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setStatus("Sending...");
+    setStatus('Envoi en cours...');
 
     const serviceID = import.meta.env.VITE_EMAILJS_SERVICE_ID;
     const templateResponseID = import.meta.env.VITE_EMAILJS_TEMPLATE_RESPONSE_ID;
     const templateAskID = import.meta.env.VITE_EMAILJS_TEMPLATE_ASK_ID;
     const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
 
-    // Ensure the variables are actually loaded (replace placeholders in check if needed)
-    if (
-      !serviceID ||
-      !templateResponseID ||
-      !templateAskID ||
-      !publicKey ||
-      serviceID === "TEMP_SERVICE_ID"
-    ) {
-      console.error(
-        "EmailJS environment variables are not loaded or are placeholders!"
-      );
-      setStatus("Configuration error: Could not load EmailJS credentials.");
-      return; // Stop submission if keys are missing or placeholders
+    if (!serviceID || !templateResponseID || !templateAskID || !publicKey) {
+      console.error('EmailJS environment variables are not loaded!');
+      setStatus('Erreur de configuration: Impossible de charger les identifiants EmailJS.');
+      return;
     }
 
     try {
-      if (!form.current) return;
-      
-      await emailjs.sendForm(
-        serviceID,
-        templateResponseID,
-        form.current,
-        publicKey
-      );
-      await emailjs.sendForm(serviceID, templateAskID, form.current, publicKey);
-      console.log("SUCCESS!");
-      setStatus("Message sent successfully!");
-      setName("");
-      setEmail("");
-      setMessage("");
-      navigate("/");
-    } catch (error: any) {
-      console.log("FAILED...", error.text || error); // Log error object too
-      setStatus(
-        `Failed to send message: ${
-          error.text || "Unknown Error"
-        }. Please try again.`
-      );
+      await emailjs.sendForm(serviceID, templateAskID, form.current!, publicKey);
+      await emailjs.sendForm(serviceID, templateResponseID, form.current!, publicKey);
+      setStatus('Message envoyé avec succès!');
+      setName('');
+      setEmail('');
+      setMessage('');
+    } catch (error) {
+      console.error('Error sending email:', error);
+      setStatus("Erreur lors de l'envoi du message. Veuillez réessayer.");
     }
   };
 
   return (
-    <main className="contact-main">
-      <h1>Contact</h1>
-      <form ref={form} onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="Nom"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          name="user_name"
-          required
-        />
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          name="user_email"
-          required
-        />
-        <textarea
-          placeholder="Message"
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-          name="message"
-          required
-        />
-        <button type="submit">Envoyer</button>
-      </form>
-      {status && <p className="status-message">{status}</p>}
-    </main>
+    <div className="contact-page">
+      <div className="contact-container">
+        <div className="contact-info">
+          <h1>Contactez-moi</h1>
+          <p>
+            Je suis toujours ouvert pour:
+            <ul>
+              <li>des stages</li>
+              <li>des alternances</li>
+            </ul>
+            Également, si vous avez des projets bien définis et que vous cherchez quelqu'un pour les
+            coder.
+            <br />
+            je travail en:
+            <ul>
+              <li>front-end</li>
+              <li>back-end</li>
+              <li>full-stack</li>
+            </ul>
+            alors n'hésitez pas à me contacter.
+          </p>
+        </div>
+
+        <form ref={form} onSubmit={handleSubmit} className="contact-form">
+          <div className="form-group">
+            <label htmlFor="name">Nom</label>
+            <input
+              type="text"
+              id="name"
+              name="user_name"
+              value={name}
+              onChange={e => setName(e.target.value)}
+              required
+              placeholder="Votre nom"
+            />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="email">Email</label>
+            <input
+              type="email"
+              id="email"
+              name="user_email"
+              value={email}
+              onChange={e => setEmail(e.target.value)}
+              required
+              placeholder="Votre email"
+            />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="message">Message</label>
+            <textarea
+              id="message"
+              name="message"
+              value={message}
+              onChange={e => setMessage(e.target.value)}
+              required
+              placeholder="Votre message"
+              rows={6}
+            />
+          </div>
+
+          <button type="submit" className="submit-button">
+            Envoyer le message
+          </button>
+
+          {status && <p className="status-message">{status}</p>}
+        </form>
+      </div>
+    </div>
   );
 };
 
-export default Contact; 
+export default Contact;

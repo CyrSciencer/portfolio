@@ -1,4 +1,5 @@
 import { FC, useState } from 'react';
+import { createPortal } from 'react-dom';
 import './PortfolioCard.css';
 
 interface PortfolioCardProps {
@@ -8,6 +9,8 @@ interface PortfolioCardProps {
 
   descriptionList?: string[];
   backgroundColor?: string;
+  logo: string;
+  logoSize?: number;
 }
 
 const PortfolioCard: FC<PortfolioCardProps> = ({
@@ -15,37 +18,77 @@ const PortfolioCard: FC<PortfolioCardProps> = ({
   description,
   link,
   descriptionList,
-  backgroundColor,
+  logo,
+  logoSize = 32,
 }) => {
+  const [isOpen, setIsOpen] = useState(false);
+
   const linkClick = (url: string) => {
     window.open(url);
   };
-  const [isOpen, setIsOpen] = useState(false);
+
+  const handleClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setIsOpen(true);
+  };
+
+  const handleClose = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setIsOpen(false);
+  };
+
   return (
-    <div
-      className="card"
-      onClick={() => setIsOpen(!isOpen)}
-      style={{ '--UniqueColor': backgroundColor } as React.CSSProperties}
-    >
-      <h3 className="card-title">{title}</h3>
-      {isOpen && (
-        <>
-          <button className="card-button" onClick={() => linkClick(link)}>
-            ➠
-          </button>
-          <p>{description}</p>
-          {descriptionList && (
-            <div className="card-list">
-              <ul>
-                {descriptionList.map((item, index) => (
-                  <li key={index}>{item}</li>
-                ))}
-              </ul>
+    <>
+      <div className="card-logo-container" onClick={handleClick}>
+        <img
+          src={logo}
+          alt="logo"
+          style={{ width: logoSize, height: logoSize }}
+          className="card-logo"
+        />
+        <div className="title-container">
+          <h3 className="card-title">{title}</h3>
+        </div>
+      </div>
+
+      {isOpen &&
+        createPortal(
+          <div className="popup-overlay" onClick={handleClose}>
+            <div className="popup-content" onClick={e => e.stopPropagation()}>
+              <div className="popup-header">
+                <img
+                  src={logo}
+                  alt="logo"
+                  style={{ width: logoSize * 1.5, height: logoSize * 1.5 }}
+                  className="popup-logo"
+                />
+                <h2 className="popup-title">{title}</h2>
+                <button className="popup-close" onClick={handleClose}>
+                  ×
+                </button>
+              </div>
+              <div className="popup-body">
+                <p>{description}</p>
+                {descriptionList && (
+                  <div className="popup-list">
+                    <ul>
+                      {descriptionList.map((item, index) => (
+                        <li key={index}>{item}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </div>
+              <div className="popup-footer">
+                <button className="popup-button" onClick={() => linkClick(link)}>
+                  Voir le projet ➠
+                </button>
+              </div>
             </div>
-          )}
-        </>
-      )}
-    </div>
+          </div>,
+          document.body
+        )}
+    </>
   );
 };
 
