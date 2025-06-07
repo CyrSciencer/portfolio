@@ -145,24 +145,26 @@ main {
 
 .exercices h2,
 .projet-perso h2,
-.about-me h2 {
+.about-me h3 {
   font-family: 'JetBrains Mono', monospace;
   font-size: 1.8rem;
   font-weight: 700;
   margin-bottom: 30px;
   padding: 0;
   background: none;
-  position: relative;
-  display: inline-block;
 }
-
-.exercices h2 span {
-  font-weight: bold;
+.exercices h2,
+.projet-perso h2 {
+  border-bottom: 2px solid var(--secondary);
   color: var(--secondary);
+  padding-bottom: 10px;
+  text-align: center;
+  margin-top: 20px;
+  padding-bottom: 15px;
 }
 
 footer {
-  background-color: var(--secondary);
+  background-color: var(--accent);
   color: var(--white);
   padding: 40px 20px 20px;
   margin-top: 40px;
@@ -294,9 +296,7 @@ footer {
   padding: 10px;
   border-radius: 10px;
 }
-.projet-perso h2 {
-  color: var(--white);
-}
+
 .projectsContainer {
   display: flex;
   flex-direction: column;

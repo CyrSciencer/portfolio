@@ -4,7 +4,7 @@ import PortfolioCard from '../../components/portfolioCard/PortfolioCard';
 import './home.css';
 import profile from '../../assets/profile_pic.jpeg';
 import deliverooLogo from '../../assets/deliveroo_logo.svg';
-import vintedLogo from '../../assets/vinted_logo.jpeg';
+import vintedLogo from '../../assets/vinted_logo.png';
 import marvelLogo from '../../assets/marvel_logo.svg';
 import alchimieDesCouleursLogo from '../../assets/AdC_logo.svg';
 
@@ -69,7 +69,7 @@ const Home: FC<{ setPageLink: (pageLink: string) => void }> = ({ setPageLink }) 
           <div className="right-column">
             <div className="about-me">
               <div className="about-me-header">
-                <h2>À propos</h2>
+                <h3>À propos</h3>
                 <img src={profile} alt="profile" />
               </div>
               <div className="about-content">

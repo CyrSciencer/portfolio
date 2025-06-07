@@ -50,11 +50,14 @@
   object-fit: contain;
   transition: all 0.3s ease;
   filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+  animation: randomVibrate 0.5s ease-in-out;
+  animation-play-state: paused;
 }
 
 .card-logo:hover {
   transform: scale(1.1);
   filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+  animation-play-state: running;
 }
 
 .title-container {
@@ -180,6 +183,27 @@
   100% {
     transform: rotate(0deg) scale(1);
     filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.2));
+  }
+}
+
+@keyframes randomVibrate {
+  0% {
+    transform: rotate(0deg) scale(1);
+  }
+  25% {
+    transform: rotate(-5deg) scale(1.1);
+    filter: drop-shadow(0 0 5px rgba(0, 251, 255, 0.681));
+  }
+  50% {
+    transform: rotate(5deg) scale(1.15);
+    filter: drop-shadow(0 0 15px rgba(0, 251, 255, 0.93));
+  }
+  75% {
+    transform: rotate(-3deg) scale(1.05);
+    filter: drop-shadow(0 0 5px rgba(0, 251, 255, 0.681));
+  }
+  100% {
+    transform: rotate(0deg) scale(1);
   }
 }
 

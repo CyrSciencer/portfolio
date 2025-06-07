@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import './PortfolioCard.css';
 
@@ -22,6 +22,8 @@ const PortfolioCard: FC<PortfolioCardProps> = ({
   logoSize = 32,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const logoRef = useRef<HTMLImageElement>(null);
+  const timeoutRef = useRef<number>();
 
   const linkClick = (url: string) => {
     window.open(url);
@@ -37,10 +39,37 @@ const PortfolioCard: FC<PortfolioCardProps> = ({
     setIsOpen(false);
   };
 
+  const triggerVibration = () => {
+    if (logoRef.current) {
+      logoRef.current.style.animation = 'none';
+      logoRef.current.offsetHeight; // Force reflow
+      logoRef.current.style.animation = 'randomVibrate 0.5s ease-in-out';
+    }
+  };
+
+  useEffect(() => {
+    const scheduleNextVibration = () => {
+      const randomDelay = Math.random() * 3000 + 2000; // Entre 2 et 5 secondes
+      timeoutRef.current = window.setTimeout(() => {
+        triggerVibration();
+        scheduleNextVibration();
+      }, randomDelay);
+    };
+
+    scheduleNextVibration();
+
+    return () => {
+      if (timeoutRef.current) {
+        window.clearTimeout(timeoutRef.current);
+      }
+    };
+  }, []);
+
   return (
     <>
       <div className="card-logo-container" onClick={handleClick}>
         <img
+          ref={logoRef}
           src={logo}
           alt="logo"
           style={{ width: logoSize, height: logoSize }}
