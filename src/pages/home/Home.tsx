@@ -105,6 +105,9 @@ const Home: FC<{ setPageLink: (pageLink: string) => void }> = ({ setPageLink }) 
                       <a href="https://www.typescriptlang.org/">
                         <span className="tech-tag">TypeScript</span>
                       </a>
+                      <a href="https://dotnet.microsoft.com/fr-fr/languages/csharp">
+                        <span className="tech-tag">C# (en cours)</span>
+                      </a>
                     </div>
                   </div>
                   <div className="tech-category">
@@ -130,6 +133,7 @@ const Home: FC<{ setPageLink: (pageLink: string) => void }> = ({ setPageLink }) 
                       <a href="https://nodejs.org/en">
                         <span className="tech-tag">Node.js</span>
                       </a>
+
                       <a href="https://www.mongodb.com/">
                         <span className="tech-tag">MongoDB</span>
                       </a>
@@ -138,6 +142,9 @@ const Home: FC<{ setPageLink: (pageLink: string) => void }> = ({ setPageLink }) 
                       </a>
                       <a href="https://expo.dev/">
                         <span className="tech-tag">Expo</span>
+                      </a>
+                      <a href="https://godotengine.org/">
+                        <span className="tech-tag">Godot (C#)</span>
                       </a>
                     </div>
                   </div>
