@@ -27,7 +27,7 @@ const getLuminance = (hex: string) => {
 
 export const palettes = [
   {
-    colors: ['#692e88', '#8c9cf2', '#1d1903'],
+    colors: ['#1F8FC6', '#F7F2FD', '#21add4'],
   },
   {
     colors: ['#21add4', '#17072b', '#145c80'],

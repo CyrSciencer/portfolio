@@ -25,15 +25,27 @@ li {
 main {
   padding: 20px;
 }
-
+.about-me h2 {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.8rem;
+  font-weight: 700;
+  text-decoration: underline;
+  margin-bottom: 15px;
+}
 .main-container {
-  display: grid;
-  grid-template-columns: 0.7fr 1fr;
+  display: flex;
+  flex-direction: column;
   gap: 30px;
   padding: 20px;
   max-width: 1600px;
   margin: 0 35px;
   min-height: calc(100vh - 200px);
+}
+
+.upper-row {
+  display: flex;
+  flex-direction: row;
+  gap: 30px;
 }
 
 .exercices {
@@ -62,25 +74,20 @@ main {
   flex: 1;
 }
 
-.right-column {
-  display: flex;
-  flex-direction: column;
-  gap: 30px;
-}
-
 .about-me {
   background-color: var(--accent);
   border: none;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   padding: 25px;
   border-radius: 15px;
-  flex: 1;
+  flex: 1.8;
   display: flex;
   flex-direction: column;
 }
 
 .about-me-header {
   display: flex;
+
   align-items: center;
   justify-content: space-between;
   gap: 20px;
@@ -94,28 +101,34 @@ main {
   border: 2px solid var(--white);
   object-fit: cover;
 }
-
 .about-content {
-  flex: 1;
   display: flex;
   flex-direction: column;
+  gap: 10px;
 }
-
 .about-content p {
   font-size: 1rem;
   line-height: 1.5;
   color: var(--white);
   margin-bottom: 15px;
-  flex: 1;
 }
 
 .tech-stack {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.tech-tags {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
   margin-top: 15px;
 }
-
+.tech-category {
+  background-color: var(--primary);
+  padding: 10px;
+  border-radius: 10px;
+}
 .tech-tag {
   background-color: var(--white);
   color: var(--accent);
@@ -126,13 +139,19 @@ main {
   font-size: 0.85rem;
   transition: transform 0.2s ease;
 }
-
 .tech-tag:hover {
-  transform: translateY(-2px);
-  background-color: var(--secondary);
+  background-color: var(--accent);
+  color: var(--white);
+  cursor: pointer;
+}
+a {
+  text-decoration: none;
+  color: var(--accent);
+  margin: 10px 0px;
+}
+a:hover {
   color: var(--white);
 }
-
 .exercices,
 .projet-perso {
   position: relative;
@@ -230,7 +249,9 @@ footer {
   .main-container {
     grid-template-columns: 1fr;
   }
-
+  .upper-row {
+    flex-direction: column;
+  }
   .right-column {
     position: static;
   }
