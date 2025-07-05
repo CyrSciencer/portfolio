@@ -7,6 +7,7 @@ import deliverooLogo from '../../assets/deliveroo_logo.svg';
 import vintedLogo from '../../assets/vinted_logo.png';
 import marvelLogo from '../../assets/marvel_logo.svg';
 import alchimieDesCouleursLogo from '../../assets/AdC_logo.svg';
+import scribeOfTheDivineLogo from '../../assets/theScribe.svg';
 
 const Home: FC<{ setPageLink: (pageLink: string) => void }> = ({ setPageLink }) => {
   const navigate = useNavigate();
@@ -172,6 +173,18 @@ const Home: FC<{ setPageLink: (pageLink: string) => void }> = ({ setPageLink }) 
                   description="un site qui permet d'expérimenter et composer avec les couleurs, à utiliser pour des projets ou par simple curiosité."
                   link="https://alchimie-des-couleurs.com"
                   logo={alchimieDesCouleursLogo}
+                  logoSize={50}
+                />
+              </div>
+            </div>
+            <div className="projet-perso">
+              <h2>Projets liée au jeu vidéo et "world building"</h2>
+              <div className="projet-perso-container">
+                <PortfolioCard
+                  title="Scribe of the divine"
+                  description="un site que j'utilise pour crée une cohérence dans mon univers de jeu vidéo. Celui ci est focus sur une langue fictive et est utilisée comme archive mais n'importe qui peut s'ammuser avec."
+                  link="https://lw-scribe-work.netlify.app"
+                  logo={scribeOfTheDivineLogo}
                   logoSize={50}
                 />
               </div>
